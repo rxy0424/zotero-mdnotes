@@ -411,6 +411,8 @@ function getNCFileName(item, filePrefs) {
   } else {
     fileName = getFileName(item);
   }
+  const DISALLOWED_FILENAME_CHARACTERS_RE = /[*\"\\/<>:|?]/g;
+  fileName = fileName.replace(DISALLOWED_FILENAME_CHARACTERS_RE, '_');
   fileName = Zotero.File.getValidFileName(fileName);
   let prefix = getPref("files." + filePrefs + ".prefix");
   let suffix = getPref("files." + filePrefs + ".suffix");
@@ -803,7 +805,7 @@ async function addObsidianLink(outputFile, item) {
     await Zotero.Attachments.linkFromURL({
       url: obsidianURI,
       contentType: "x-scheme-handler/obsidian",
-      title: fileName,
+      title: "Obsidian",
       parentItemID: parentItem.id,
     });
   }
